@@ -2,6 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { MemoryRecord, Category } from '../types';
 import { useAuth } from '../context/AuthContext';
 import posts from '../data/posts.json';
+console.log('🔥🔥🔥 AdminPostEditor FILE LOADED');
+
 
 /** === GitHub 发布目标 === */
 const GITHUB_OWNER = 'Karos44';
@@ -28,6 +30,8 @@ function generateNumericId(existing: { id: number }[]): number {
 }
 
 export function AdminPostEditor() {
+  console.log('🔥🔥🔥 AdminPostEditor COMPONENT EXECUTED');
+
   const { user } = useAuth();
   if (user?.role !== 'ADMIN') return null;
 
