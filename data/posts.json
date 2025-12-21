@@ -1,0 +1,11 @@
+[
+  {
+    "id": "2024-001",
+    "serialNumber": "AT-001",
+    "date": "2024-12-01",
+    "category": "日常",
+    "mood": "混沌",
+    "content": "这是你的第一篇正式文章。\n\n它存在于 Git 仓库中，而不是浏览器缓存。\n\n这意味着：\n- 不会丢\n- 可回滚\n- Cloudflare 可以稳定读取",
+    "image": null
+  }
+]
