@@ -7,7 +7,7 @@ import { ThemeSwitch } from './components/ui/ThemeSwitch';
 import { RecordItem } from './components/feed/RecordItem';
 import { ProfilePanel } from './components/layout/ProfilePanel';
 import { AuthProvider } from './context/AuthContext';
-import { AdminCommandPanel } from './admin/AdminCommandPanel';
+import { AdminPostEditor } from './admin/AdminPostEditor';
 
 // 确保 Fatal404.tsx 和 App.tsx 在同一层（同级目录）
 // 如果你放在别处，把下面这行路径改成对应位置即可
@@ -212,7 +212,7 @@ const filteredData = useMemo(() => {
         </div>
         <div className="p-6 flex flex-col gap-6 h-full">
           <ProfilePanel />
-          <AdminCommandPanel />
+          <AdminPostEditor />
         </div>
       </aside>
     </div>
@@ -244,17 +244,20 @@ function PostRoute() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const record = id ? getRecordById(id) : null;
+  const record = id ? getRecordById(Number(id)) : null;
 
-  // id 不存在：用你的全屏 404 覆盖
   if (!record) return <Fatal404 />;
 
   return (
     <div className="p-6 lg:p-10">
+      {/* 顶部返回 + 分类 */}
       <div className="flex items-center justify-between gap-4 mb-6">
         <button
           onClick={() => navigate(-1)}
-          className="px-3 py-2 border border-concrete-300 dark:border-metal-700 text-ink-600 dark:text-metal-300 hover:border-safety-orange hover:text-safety-orange transition-colors font-tech text-xs uppercase"
+          className="px-3 py-2 border border-concrete-300 dark:border-metal-700
+                     text-ink-600 dark:text-metal-300
+                     hover:border-safety-orange hover:text-safety-orange
+                     transition-colors font-tech text-xs uppercase"
         >
           ← Back
         </button>
@@ -264,24 +267,46 @@ function PostRoute() {
         </div>
       </div>
 
-      <header className="flex items-baseline gap-4 mb-4 font-tech text-ink-500 dark:text-metal-500 text-sm">
+      {/* ✅ 文章标题 */}
+      {record.title && (
+        <h1
+          className="
+            mb-4
+            font-tech
+            text-2xl
+            tracking-widest
+            text-safety-orange
+          "
+        >
+          {record.title}
+        </h1>
+      )}
+
+      {/* 元信息行 */}
+      <header className="flex items-baseline gap-4 mb-6 font-tech text-ink-500 dark:text-metal-500 text-sm">
         <span className="text-safety-dim">#{record.serialNumber}</span>
         <span>[{record.date}]</span>
         <span className="flex-grow border-b border-concrete-300 dark:border-metal-800 border-dashed opacity-50"></span>
-        <span className="text-[10px] px-1 border border-concrete-300 dark:border-metal-700">状态: {record.mood}</span>
+        <span className="text-[10px] px-1 border border-concrete-300 dark:border-metal-700">
+          状态: {record.mood}
+        </span>
       </header>
 
+      {/* 正文 */}
       <div className="prose dark:prose-invert max-w-none">
         <p className="whitespace-pre-wrap text-ink-700 dark:text-metal-200 leading-relaxed font-mono">
           {record.content}
         </p>
 
         {record.image && (
-          <div className="mt-6 border-2 border-concrete-300 dark:border-metal-700 p-1 bg-concrete-200 dark:bg-metal-900 inline-block">
+          <div className="mt-6 border-2 border-concrete-300 dark:border-metal-700
+                          p-1 bg-concrete-200 dark:bg-metal-900 inline-block">
             <img
               src={record.image}
               alt="证据"
-              className="max-w-full h-auto object-cover opacity-90 dark:opacity-75 contrast-125 sepia-[.2]"
+              className="max-w-full h-auto object-cover
+                         opacity-90 dark:opacity-75
+                         contrast-125 sepia-[.2]"
             />
           </div>
         )}
@@ -289,6 +314,7 @@ function PostRoute() {
     </div>
   );
 }
+
 
 export default function App() {
   return (

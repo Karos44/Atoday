@@ -9,11 +9,13 @@ export interface User {
 }
 
 export interface MemoryRecord {
-  id: string;
+  id: number;
   serialNumber: string;
   date: string;
   category: Category;
   content: string;
+  title?: string;
+  slug?: string;
   image?: string | null;
   mood?: string;
 }
