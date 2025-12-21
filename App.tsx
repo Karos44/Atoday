@@ -7,6 +7,7 @@ import { ThemeSwitch } from './components/ui/ThemeSwitch';
 import { RecordItem } from './components/feed/RecordItem';
 import { ProfilePanel } from './components/layout/ProfilePanel';
 import { AuthProvider } from './context/AuthContext';
+import { AdminCommandPanel } from './admin/AdminCommandPanel';
 
 // 确保 Fatal404.tsx 和 App.tsx 在同一层（同级目录）
 // 如果你放在别处，把下面这行路径改成对应位置即可
@@ -211,6 +212,7 @@ const filteredData = useMemo(() => {
         </div>
         <div className="p-6 flex flex-col gap-6 h-full">
           <ProfilePanel />
+          <AdminCommandPanel />
         </div>
       </aside>
     </div>
