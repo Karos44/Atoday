@@ -31,5 +31,26 @@
   "content": "我看看还会不会有问题",
   "image": null
 }
-
+,
+{
+  "id": 4,
+  "serialNumber": "AT-251223",
+  "date": "2025-12-23",
+  "title": "对长文章适应性的测试",
+  "category": "视觉",
+  "mood": "稳定",
+  "content": "123\n也许我应该写点什么\n也许我应该保持无意义输入\n456\n你在吗？\n它不会认得我了\n你也不会记得\n当我的世界空无一人时\n还有什么值得记忆？\n789\n还有多久\n还有多长时间\n我为什么\n为什么要\n为什么要坚持下去\n10\n我需要清醒一点\n0\n不对\n不\na\na\na\na\na\na\na\na\na\n\na\n系统中断",
+  "image": null
+}
+,
+{
+  "id": 5,
+  "serialNumber": "AT-0005",
+  "date": "2025-12-23",
+  "title": "测试下gif等等",
+  "category": "视觉",
+  "mood": "乐",
+  "content": "也要过年了，某人可要解冻了哈哈",
+  "image": "/images/81fad8957686ff2641f17afb05c929678034163.gif"
+}
 ]

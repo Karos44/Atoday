@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { MemoryRecord, Category } from '../types';
 import { useAuth } from '../context/AuthContext';
 import posts from '../data/posts.json';
 console.log('🔥🔥🔥 AdminPostEditor FILE LOADED');
-
 
 /** === GitHub 发布目标 === */
 const GITHUB_OWNER = 'Karos44';
@@ -14,19 +13,15 @@ const EDIT_URL = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/edit/main/${
 
 const CATEGORIES: Category[] = ['日常', '吐槽', '视觉', '混沌'];
 
-/** 生成 AT-YYMMDD（展示编号） */
-function generateNextSerial(): string {
-  const now = new Date();
-  const yy = String(now.getFullYear()).slice(2);
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  return `AT-${yy}${mm}${dd}`;
-}
-
 /** 从现有 posts.json 生成下一个数字 ID */
 function generateNumericId(existing: { id: number }[]): number {
   if (!existing.length) return 1;
-  return Math.max(...existing.map(p => p.id)) + 1;
+  return Math.max(...existing.map((p) => p.id)) + 1;
+}
+
+/** 顺序编号格式：AT-0001（与时间解耦） */
+function formatSequence(id: number): string {
+  return `AT-${String(id).padStart(4, '0')}`;
 }
 
 export function AdminPostEditor() {
@@ -41,31 +36,36 @@ export function AdminPostEditor() {
   const [mood, setMood] = useState('稳定');
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  // 先计算 id（顺序）
+  const id = useMemo(() => generateNumericId(posts as { id: number }[]), []);
+
+  // 再由 id 推导序号（保持字段名 serialNumber，避免类型/别处引用报错）
+  const serialNumber = useMemo(() => formatSequence(id), [id]);
+
+  const date = useMemo(() => new Date().toISOString().slice(0, 10), []);
+
+  // 轻微优化：预览 URL 释放，避免切换文件后内存泄漏（不影响 UI）
   const previewImage = useMemo(
     () => (imageFile ? URL.createObjectURL(imageFile) : null),
     [imageFile]
   );
-
-  const serialNumber = useMemo(generateNextSerial, []);
-  const date = useMemo(() => new Date().toISOString().slice(0, 10), []);
-  const id = useMemo(
-    () => generateNumericId(posts as { id: number }[]),
-    []
-  );
+  useEffect(() => {
+    return () => {
+      if (previewImage) URL.revokeObjectURL(previewImage);
+    };
+  }, [previewImage]);
 
   const handlePublish = async () => {
-    const imagePath = imageFile
-      ? `/images/${imageFile.name}`
-      : null;
+    const imagePath = imageFile ? `/images/${imageFile.name}` : null;
 
     const post: MemoryRecord = {
-      id,               // ✅ number
-      serialNumber,
+      id, // ✅ number
+      serialNumber, // ✅ 现在是 AT-000X（顺序）
       date,
-      title,            // ✅ 独立字段
+      title, // ✅ 独立字段
       category,
       mood,
-      content,          // ✅ 不再拼 title
+      content, // ✅ 不再拼 title
       image: imagePath,
     };
 
@@ -116,11 +116,13 @@ export function AdminPostEditor() {
         {/* Meta */}
         <div className="grid grid-cols-2 gap-3">
           <div className="text-ink-400 dark:text-metal-600">
-            SERIAL<br />
+            SERIAL
+            <br />
             <span className="text-safety-orange">{serialNumber}</span>
           </div>
           <div className="text-ink-400 dark:text-metal-600">
-            DATE<br />
+            DATE
+            <br />
             <span className="text-safety-orange">{date}</span>
           </div>
         </div>
@@ -148,7 +150,9 @@ export function AdminPostEditor() {
             className="bg-black border border-concrete-300 dark:border-metal-700 text-safety-orange px-2 py-2"
           >
             {CATEGORIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>
+                {c}
+              </option>
             ))}
           </select>
 
@@ -199,7 +203,8 @@ export function AdminPostEditor() {
 
           {imageFile && (
             <div className="text-[10px] text-ink-400 dark:text-metal-600">
-              请将该图片放入：<br />
+              请将该图片放入：
+              <br />
               <span className="text-safety-orange">
                 /public/images/{imageFile.name}
               </span>

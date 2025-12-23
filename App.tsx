@@ -60,6 +60,9 @@ function categoryToPath(cat: Category): string {
 function TerminalShell() {
   const navigate = useNavigate();
   const location = useLocation();
+  const showSearchBar =
+  location.pathname === '/' ||
+  location.pathname.startsWith('/c/');
   const params = useParams();
 
   const { user } = useAuth();
@@ -99,61 +102,123 @@ function TerminalShell() {
 
   return (
     <>
-      {/* ================= 主体三栏 ================= */}
-      <div className="h-screen w-full grid grid-cols-1 lg:grid-cols-12 bg-paper dark:bg-void overflow-hidden">
-        {/* LEFT */}
-        <aside className="col-span-1 lg:col-span-2 flex flex-col border-r border-concrete-300 dark:border-metal-800">
-          <MechanicalKnob
-            options={['全部', '日常', '吐槽', '视觉', '混沌']}
-            selected={selectedCategory}
-            onChange={handleCategoryChange}
-          />
-          <ThemeSwitch isDark={isDark} onToggle={() => setIsDark(!isDark)} />
-        </aside>
+      {/* ================= 外层壳（关键修复点） ================= */}
+      <div className="h-screen w-full flex flex-col bg-paper dark:bg-void overflow-hidden">
 
-        {/* CENTER */}
-        <main className="col-span-1 lg:col-span-7 flex flex-col overflow-hidden">
-          <div id="main-scroll" className="flex-1 overflow-y-auto">
-            <Outlet context={{ filteredData, openRecord }} />
-          </div>
-
-          <div className="h-16 border-t border-safety-orange flex items-center">
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 bg-transparent px-4 text-safety-orange"
-              placeholder="搜索记忆库..."
-            />
-          </div>
-        </main>
-
-        {/* RIGHT */}
-        <aside className="col-span-1 lg:col-span-3 flex flex-col overflow-hidden border-l border-concrete-300 dark:border-metal-800">
-          <div className="h-16 shrink-0 flex items-center justify-between px-4 border-b border-concrete-300 dark:border-metal-800">
-            <div className="font-tech text-xs tracking-[0.25em] text-ink-500 dark:text-metal-500">
-              STATUS
+        {/* ================= 顶部 SYSTEM BAR（补回秃头） ================= */}
+        <div
+          className="
+            h-12 shrink-0
+            border-b border-concrete-300 dark:border-metal-800
+            bg-paper/70 dark:bg-void/70
+            backdrop-blur
+          "
+        >
+          <div className="h-full w-full grid grid-cols-1 lg:grid-cols-12">
+            {/* LEFT */}
+            <div className="hidden lg:flex lg:col-span-2 items-center px-6 border-r border-concrete-300 dark:border-metal-800">
+              <span className="font-tech text-xs tracking-[0.35em] text-ink-500 dark:text-metal-500">
+                TERMINAL
+              </span>
             </div>
 
-            {isAdmin && (
-              <button
-                onClick={() => navigate('/admin/write')}
-                className="px-3 py-2 border border-concrete-300 dark:border-metal-700
-                           text-ink-600 dark:text-metal-300
-                           hover:border-safety-orange hover:text-safety-orange
-                           transition-colors font-tech text-xs uppercase"
-              >
-                WRITE
-              </button>
-            )}
-          </div>
+            {/* CENTER */}
+            <div className="col-span-1 lg:col-span-7 flex items-center justify-between px-6 border-r border-concrete-300 dark:border-metal-800">
+              <span className="font-tech text-xs tracking-[0.35em] text-ink-500 dark:text-metal-500">
+                DATA_STREAM
+              </span>
 
-          <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
-            <ProfilePanel />
+              {/* waveform 装饰 */}
+              <div className="flex items-end gap-[3px] opacity-70">
+                {[6, 10, 14, 9, 16, 8, 12, 7, 15, 9].map((h, i) => (
+                  <div
+                    key={i}
+                    className="w-[3px] bg-ink-400 dark:bg-metal-600"
+                    style={{ height: `${h}px` }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT */}
+<div className="hidden lg:flex lg:col-span-3 items-center justify-between px-6 border-r border-concrete-300 dark:border-metal-800">
+  {isAdmin ? (
+    <button
+      onClick={() => navigate('/admin/write')}
+      className="
+        px-3 py-1
+        border border-concrete-300 dark:border-metal-700
+        text-ink-600 dark:text-metal-300
+        hover:border-safety-orange hover:text-safety-orange
+        transition-colors
+        font-tech text-[10px] tracking-widest
+      "
+    >
+      WRITE
+    </button>
+  ) : (
+    <span /> // 占位，保证 STATUS 仍然贴右
+  )}
+
+  <span className="font-tech text-xs tracking-[0.35em] text-ink-500 dark:text-metal-500">
+    STATUS
+  </span>
+</div>
+
+
           </div>
-        </aside>
+        </div>
+
+        {/* ================= 主体三栏 ================= */}
+        <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+
+          {/* LEFT */}
+          <aside className="col-span-1 lg:col-span-2 flex flex-col border-r border-concrete-300 dark:border-metal-800">
+            <MechanicalKnob
+              options={['全部', '日常', '吐槽', '视觉', '混沌']}
+              selected={selectedCategory}
+              onChange={handleCategoryChange}
+            />
+            <ThemeSwitch isDark={isDark} onToggle={() => setIsDark(!isDark)} />
+          </aside>
+
+          {/* CENTER */}
+          <main className="col-span-1 lg:col-span-7 flex flex-col overflow-hidden">
+            <div id="main-scroll" className="flex-1 overflow-y-auto">
+              <Outlet context={{ filteredData, openRecord }} />
+            </div>
+
+            {showSearchBar && (
+  <div className="h-16 border-t border-safety-orange flex items-center">
+    <input
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  placeholder="搜索记忆库..."
+  className="
+    flex-1 bg-transparent px-4
+    text-safety-orange
+    outline-none
+    focus:outline-none
+    focus:ring-0
+    focus:border-transparent
+  "
+/>
+
+  </div>
+)}
+
+          </main>
+
+          {/* RIGHT */}
+          <aside className="col-span-1 lg:col-span-3 flex flex-col overflow-hidden border-l border-concrete-300 dark:border-metal-800">
+            <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
+              <ProfilePanel />
+            </div>
+          </aside>
+        </div>
       </div>
 
-      {/* ================= 悬浮外链球（全局 / fixed） ================= */}
+      {/* ================= 悬浮外链球 ================= */}
       <FloatingLinkOrb
         links={[
           { label: 'GITHUB', href: 'https://github.com/Karos44', hint: 'repo / code' },
@@ -164,6 +229,7 @@ function TerminalShell() {
     </>
   );
 }
+
 
 /* ---------- routes ---------- */
 
@@ -195,7 +261,6 @@ function PostRoute() {
           sticky top-0 z-20
           bg-paper/80 dark:bg-void/80
           backdrop-blur
-          border-b border-concrete-300 dark:border-metal-800
           px-6 py-4
         "
       >
