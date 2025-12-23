@@ -52,5 +52,15 @@
   "mood": "乐",
   "content": "也要过年了，某人可要解冻了哈哈",
   "image": "/images/81fad8957686ff2641f17afb05c929678034163.gif"
+},
+{
+  "id": 6,
+  "serialNumber": "AT-0006",
+  "date": "2025-12-23",
+  "title": "博客正式启动！",
+  "category": "日常",
+  "mood": "兴奋",
+  "content": "从今天开始我博客也是正式上线了，让我们欢呼鼓掌庆祝它并没人在意的诞生吧！",
+  "image": "/images/3c598c5e6050aa32e1b061208d40c29f1643026671.png"
 }
 ]
