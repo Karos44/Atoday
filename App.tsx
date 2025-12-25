@@ -18,6 +18,7 @@ import { FloatingLinkOrb } from './components/layout/FloatingLinkOrb';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AdminPostEditor } from './admin/AdminPostEditor';
 import { Fatal404 } from './data/Fatal404';
+import ScrollToTop from './components/ScrollToTop.tsx'
 
 /* ---------- types ---------- */
 
@@ -76,6 +77,13 @@ function TerminalShell() {
     document.documentElement.classList.toggle('dark', isDark);
   }, [isDark]);
 
+  useEffect(() => {
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual';
+  }
+}, []);
+
+
   const allRecords = getAllRecords();
 
   const filteredData = useMemo(() => {
@@ -102,6 +110,8 @@ function TerminalShell() {
 
   return (
     <>
+    <ScrollToTop />
+
       {/* ================= 外层壳（关键修复点） ================= */}
       <div className="h-screen w-full flex flex-col bg-paper dark:bg-void overflow-hidden">
 
