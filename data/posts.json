@@ -9,52 +9,8 @@
     "image": null
   }
   ,
-  {
+{
   "id": 2,
-  "serialNumber": "AT-251221",
-  "date": "2025-12-21",
-  "title": "让我看看这个模块怎么样",
-  "slug": "让我看看这个模块怎么样",
-  "category": "吐槽",
-  "mood": "轻松",
-  "content": "话说怎么变成两块了啊！",
-  "image": null
-}
-,
-{
-  "id": 3,
-  "serialNumber": "AT-251221",
-  "date": "2025-12-21",
-  "title": "测试",
-  "category": "视觉",
-  "mood": "稳定",
-  "content": "我看看还会不会有问题",
-  "image": null
-}
-,
-{
-  "id": 4,
-  "serialNumber": "AT-251223",
-  "date": "2025-12-23",
-  "title": "对长文章适应性的测试",
-  "category": "视觉",
-  "mood": "稳定",
-  "content": "123\n也许我应该写点什么\n也许我应该保持无意义输入\n456\n你在吗？\n它不会认得我了\n你也不会记得\n当我的世界空无一人时\n还有什么值得记忆？\n789\n还有多久\n还有多长时间\n我为什么\n为什么要\n为什么要坚持下去\n10\n我需要清醒一点\n0\n不对\n不\na\na\na\na\na\na\na\na\na\n\na\n系统中断",
-  "image": null
-}
-,
-{
-  "id": 5,
-  "serialNumber": "AT-0005",
-  "date": "2025-12-23",
-  "title": "测试下gif等等",
-  "category": "视觉",
-  "mood": "乐",
-  "content": "也要过年了，某人可要解冻了哈哈",
-  "image": "/images/81fad8957686ff2641f17afb05c929678034163.gif"
-},
-{
-  "id": 6,
   "serialNumber": "AT-0006",
   "date": "2025-12-23",
   "title": "博客正式启动！",
@@ -62,5 +18,15 @@
   "mood": "兴奋",
   "content": "从今天开始我博客也是正式上线了，让我们欢呼鼓掌庆祝它并没人在意的诞生吧！",
   "image": "/images/3c598c5e6050aa32e1b061208d40c29f1643026671.png"
+},
+{
+  "id": 3,
+  "serialNumber": "AT-0007",
+  "date": "2025-12-31",
+  "title": "你好，2026",
+  "category": "日常",
+  "mood": "感叹",
+  "content": "愿天上人间，年年今夜。\n新年快乐，也希望新的一年心魔能不战而溃。",
+  "image": "/images/220676FA483C84A3906223F18B149585.png"
 }
 ]
